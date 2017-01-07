@@ -22,56 +22,19 @@ under the License.
 	
 	<groupId>de.robertmetzger</groupId>
 	<artifactId>flink-utils</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>Flink Quickstart Job</name>
-	<url>http://www.myorganization.org</url>
+	<url>https://github.com/rmetzger/flink-utils</url>
+	<description>A collection of utilities for Apache Flink®</description>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<flink.version>1.3-SNAPSHOT</flink.version>
+		<flink.version>1.1.4</flink.version>
 		<slf4j.version>1.7.7</slf4j.version>
 		<log4j.version>1.2.17</log4j.version>
 	</properties>
-
-	<repositories>
-		<repository>
-			<id>apache.snapshots</id>
-			<name>Apache Development Snapshot Repository</name>
-			<url>https://repository.apache.org/content/repositories/snapshots/</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
-	
-	<!-- 
-		
-		Execute "mvn clean package -Pbuild-jar"
-		to build a jar file out of this project!
-
-		How to use the Flink Quickstart pom:
-
-		a) Adding new dependencies:
-			You can add dependencies to the list below.
-			Please check if the maven-shade-plugin below is filtering out your dependency
-			and remove the exclude from there.
-
-		b) Build a jar for running on the cluster:
-			There are two options for creating a jar from this project
-
-			b.1) "mvn clean package" -> this will create a fat jar which contains all
-					dependencies necessary for running the jar created by this pom in a cluster.
-					The "maven-shade-plugin" excludes everything that is provided on a running Flink cluster.
-
-			b.2) "mvn clean package -Pbuild-jar" -> This will also create a fat-jar, but with much
-					nicer dependency exclusion handling. This approach is preferred and leads to
-					much cleaner jar files.
-	-->
 
 	<dependencies>
 		<!-- Apache Flink dependencies -->
@@ -106,73 +69,6 @@ under the License.
 		
 	</dependencies>
 
-	<profiles>
-		<profile>
-			<!-- Profile for packaging correct JAR files -->
-			<id>build-jar</id>
-
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-
-			<dependencies>
-				<dependency>
-					<groupId>org.apache.flink</groupId>
-					<artifactId>flink-java</artifactId>
-					<version>${flink.version}</version>
-					<scope>provided</scope>
-				</dependency>
-				<dependency>
-					<groupId>org.apache.flink</groupId>
-					<artifactId>flink-streaming-java_2.10</artifactId>
-					<version>${flink.version}</version>
-					<scope>provided</scope>
-				</dependency>
-				<dependency>
-					<groupId>org.apache.flink</groupId>
-					<artifactId>flink-clients_2.10</artifactId>
-					<version>${flink.version}</version>
-					<scope>provided</scope>
-				</dependency>
-				<dependency>
-					<groupId>org.slf4j</groupId>
-					<artifactId>slf4j-log4j12</artifactId>
-					<version>${slf4j.version}</version>
-					<scope>provided</scope>
-				</dependency>
-				<dependency>
-					<groupId>log4j</groupId>
-					<artifactId>log4j</artifactId>
-					<version>${log4j.version}</version>
-					<scope>provided</scope>
-				</dependency>
-			</dependencies>
-
-			<build>
-				<plugins>
-					<!-- disable the exclusion rules -->
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-shade-plugin</artifactId>
-						<version>2.4.1</version>
-						<executions>
-							<execution>
-								<phase>package</phase>
-								<goals>
-									<goal>shade</goal>
-								</goals>
-								<configuration>
-									<artifactSet>
-										<excludes combine.self="override"></excludes>
-									</artifactSet>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
 
 	<build>
 		<plugins>
@@ -287,15 +183,6 @@ under the License.
 									</excludes>
 								</filter>
 							</filters>
-							<!-- If you want to use ./bin/flink run <quickstart jar> uncomment the following lines.
-							This will add a Main-Class entry to the manifest file -->
-							<!--
-							<transformers>
-								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>de.robertmetzger.StreamingJob</mainClass>
-								</transformer>
-							</transformers>
-						    -->
 							<createDependencyReducedPom>false</createDependencyReducedPom>
 						</configuration>
 					</execution>
@@ -307,74 +194,131 @@ under the License.
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.1</version>
 				<configuration>
-					<source>1.7</source> <!-- If you want to use Java 8, change this to "1.8" -->
-					<target>1.7</target> <!-- If you want to use Java 8, change this to "1.8" -->
+					<source>1.7</source>
+					<target>1.7</target>
 				</configuration>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>2.17</version>
+				<executions>
+					<execution>
+						<id>validate</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<configLocation>/tools/checkstyle.xml</configLocation>
+					<logViolationsToConsole>true</logViolationsToConsole>
+				</configuration>
+			</plugin>
+
+
+			<plugin>
+				<groupId>org.apache.rat</groupId>
+				<artifactId>apache-rat-plugin</artifactId>
+				<version>0.11</version><!--$NO-MVN-MAN-VER$-->
+				<inherited>false</inherited>
+				<executions>
+					<execution>
+						<phase>verify</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<excludeSubProjects>false</excludeSubProjects>
+					<numUnapprovedLicenses>0</numUnapprovedLicenses>
+					<licenses>
+						<license implementation="org.apache.rat.analysis.license.SimplePatternBasedLicense">
+							<licenseFamilyCategory>AL2 </licenseFamilyCategory>
+							<licenseFamilyName>Apache License 2.0</licenseFamilyName>
+							<notes />
+							<patterns>
+								<pattern>Licensed under the Apache License, Version 2.0</pattern>
+								<pattern>Robert Metzger and contributors</pattern>
+							</patterns>
+						</license>
+					</licenses>
+					<licenseFamilies>
+						<licenseFamily implementation="org.apache.rat.license.SimpleLicenseFamily">
+							<familyName>Apache License 2.0</familyName>
+						</licenseFamily>
+					</licenseFamilies>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.2.1</version><!--$NO-MVN-MAN-VER$-->
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9.1</version><!--$NO-MVN-MAN-VER$-->
+				<configuration>
+					<quiet>true</quiet>
+				</configuration>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
-		
-			
-		<!-- If you want to use Java 8 Lambda Expressions uncomment the following lines -->
-		<!--
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<configuration>
-						<source>1.8</source>
-						<target>1.8</target>
-						<compilerId>jdt</compilerId>
-					</configuration>
-					<dependencies>
-						<dependency>
-							<groupId>org.eclipse.tycho</groupId>
-							<artifactId>tycho-compiler-jdt</artifactId>
-							<version>0.21.0</version>
-						</dependency>
-					</dependencies>
-				</plugin>
-		
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.apache.maven.plugins</groupId>
-										<artifactId>maven-assembly-plugin</artifactId>
-										<versionRange>[2.4,)</versionRange>
-										<goals>
-											<goal>single</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore/>
-									</action>
-								</pluginExecution>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.apache.maven.plugins</groupId>
-										<artifactId>maven-compiler-plugin</artifactId>
-										<versionRange>[3.1,)</versionRange>
-										<goals>
-											<goal>testCompile</goal>
-											<goal>compile</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore/>
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-		-->
-		
 	</build>
+	<profiles>
+		<profile>
+			<id>release</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.4</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-release-plugin</artifactId>
+							<version>2.1</version>
+							<configuration>
+								<mavenExecutorId>forked-path</mavenExecutorId>
+								<useReleaseProfile>false</useReleaseProfile>
+								<arguments>-Psonatype-oss-release</arguments>
+							</configuration>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
+		</profile>
+	</profiles>
 </project>
