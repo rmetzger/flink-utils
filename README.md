@@ -1,6 +1,8 @@
 # flink-utils
 Optional utilities for Apache Flink
 
+![Travis Status](https://api.travis-ci.org/rmetzger/flink-utils.svg?branch=master)
+
 ## Available Utilities
 
 ### ThroughputLogger
