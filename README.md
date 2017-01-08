@@ -3,11 +3,8 @@ Optional utilities for Apache Flink
 
 [![Build Status](https://travis-ci.org/rmetzger/flink-utils.svg?branch=master)](https://travis-ci.org/rmetzger/flink-utils)
 
-## Available Utilities
+[Project website](http://robertmetzger.de/flink-utils/)
 
-### ThroughputLogger
-
-This tool allows users to easily measure the throughput of a stream.
 
 ## Remarks for developers
 
