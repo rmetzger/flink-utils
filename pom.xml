@@ -219,6 +219,9 @@
 				<configuration>
 					<configLocation>/tools/checkstyle.xml</configLocation>
 					<logViolationsToConsole>true</logViolationsToConsole>
+					<consoleOutput>true</consoleOutput>
+					<failOnViolation>true</failOnViolation>
+          <failsOnError>true</failsOnError>
 				</configuration>
 			</plugin>
 
@@ -257,7 +260,7 @@
 					</licenseFamilies>
 					<excludes>
 						<exclude>README.md</exclude>
-						<exclude>tools/checkstyle.xml</exclude>
+						<exclude>tools/*.xml</exclude>
 					</excludes>
 				</configuration>
 			</plugin>

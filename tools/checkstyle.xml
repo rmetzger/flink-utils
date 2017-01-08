@@ -25,7 +25,7 @@ It is licensed under the GNU LESSER GENERAL PUBLIC LICENSE Version 2.1, February
 <module name = "Checker">
     <property name="charset" value="UTF-8"/>
 
-    <property name="severity" value="warning"/>
+    <property name="severity" value="error"/>
 
     <property name="fileExtensions" value="java, properties, xml"/>
     <!-- Checks for whitespace                               -->
