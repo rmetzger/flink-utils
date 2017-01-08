@@ -1,7 +1,7 @@
 # flink-utils
 Optional utilities for Apache Flink
 
-![Travis Status](https://api.travis-ci.org/rmetzger/flink-utils.svg?branch=master)
+[![Build Status](https://travis-ci.org/rmetzger/flink-utils.svg?branch=master)](https://travis-ci.org/rmetzger/flink-utils)
 
 ## Available Utilities
 
