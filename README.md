@@ -8,7 +8,8 @@ Optional utilities for Apache Flink
 
 ## Remarks for developers
 
-* This project uses the [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html).
+* This project uses the [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html) with the following changes:
+  * Line length is not enforced
 
 
 ## Disclaimer
