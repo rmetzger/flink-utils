@@ -17,7 +17,6 @@
 
 package de.robertmetzger.flink.utils.eventtime;
 
-import de.robertmetzger.flink.utils.eventtime.TimeSmoother.TreeMultiMap;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -28,7 +27,6 @@ import java.util.NavigableMap;
 import java.util.TreeMap;
 import org.apache.flink.metrics.Gauge;
 import org.apache.flink.streaming.api.TimeCharacteristic;
-import org.apache.flink.streaming.api.checkpoint.Checkpointed;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.operators.AbstractStreamOperator;
 import org.apache.flink.streaming.api.operators.OneInputStreamOperator;
@@ -36,8 +34,9 @@ import org.apache.flink.streaming.api.watermark.Watermark;
 import org.apache.flink.streaming.runtime.streamrecord.StreamRecord;
 
 public class TimeSmoother<T> extends AbstractStreamOperator<T>
-    implements OneInputStreamOperator<T, T>, Checkpointed<TreeMultiMap<Long, T>> {
+    implements OneInputStreamOperator<T, T> {
 
+  // TODO use a PriorityQueue here.
   private transient TreeMultiMap<Long, T> tree;
   private int sizeLimit = 0;
 
@@ -111,6 +110,9 @@ public class TimeSmoother<T> extends AbstractStreamOperator<T>
     output.emitWatermark(mark);
   }
 
+
+  /*
+  TODO enable checkpointing again.
   @Override
   public TreeMultiMap<Long, T> snapshotState(long checkpointId, long checkpointTimestamp) throws Exception {
     return tree;
@@ -120,6 +122,7 @@ public class TimeSmoother<T> extends AbstractStreamOperator<T>
   public void restoreState(TreeMultiMap<Long, T> state) throws Exception {
     tree = state;
   }
+  */
 
   public static class TreeMultiMap<K, V> implements Serializable {
 
