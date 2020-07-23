@@ -24,7 +24,6 @@
 		<relativePath>..</relativePath>
 	</parent>
 
-	<groupId>de.robertmetzger</groupId>
 	<artifactId>flink-utils-basics</artifactId>
 	
 </project>

@@ -24,10 +24,19 @@ public class SimpleStringSource implements SourceFunction<String> {
 
   private boolean running = true;
 
+  private long sleep = 0;
+
+  public SimpleStringSource(long sleep) {
+    this.sleep = sleep;
+  }
+
   @Override
   public void run(SourceContext<String> ctx) throws Exception {
     while (this.running) {
       ctx.collect(RandomStringUtils.random(10));
+      if (sleep > 0) {
+        Thread.sleep(sleep);
+      }
     }
   }
 
