@@ -17,8 +17,9 @@
 
 package de.robertmetzger.flink.utils.datagenerators;
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.flink.streaming.api.functions.source.SourceFunction;
+
+import org.apache.commons.lang3.RandomStringUtils;
 
 public class SimpleStringSource implements SourceFunction<String> {
 

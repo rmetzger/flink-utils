@@ -19,12 +19,32 @@
 	
 	<groupId>de.robertmetzger</groupId>
 	<artifactId>flink-utils</artifactId>
-	<version>0.2-SNAPSHOT</version>
+	<version>0.2-1.15.0</version>
 	<packaging>pom</packaging>
 
 	<name>Flink Utilities Parent</name>
 	<url>https://github.com/rmetzger/flink-utils</url>
 	<description>A collection of utilities for Apache Flink®</description>
+
+	<scm>
+		<url>https://github.com/rmetzger/flink-utils</url>
+		<connection>scm:git:https://github.com/rmetzger/flink-utils.git</connection>
+	</scm>
+
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<organization>Robert Metzger</organization>
+			<url>http://robertmetzger.de/</url>
+		</developer>
+	</developers>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -58,13 +78,21 @@
 	</dependencies>
 
 	<distributionManagement>
-	   <repository>
+	   <!--<repository>
 	     <id>github</id>
 	     <name>GitHub rmetzger Apache Maven Packages</name>
 	     <url>https://maven.pkg.github.com/rmetzger/flink-utils</url>
+	   </repository> -->
+	    <repository>
+	     <id>ossrh</id>
+	     <name>ossrh</name>
+	     <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 	   </repository>
+	   <snapshotRepository>
+	    <id>ossrh</id>
+	    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+	  </snapshotRepository>
 	</distributionManagement>
-
 
 	<build>
 		<plugins>
@@ -77,6 +105,17 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
+			    <plugin>
+		      <groupId>org.sonatype.plugins</groupId>
+		      <artifactId>nexus-staging-maven-plugin</artifactId>
+		      <version>1.6.9</version>
+		      <extensions>true</extensions>
+		      <configuration>
+		        <serverId>ossrh</serverId>
+		        <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+		        <autoReleaseAfterClose>true</autoReleaseAfterClose>
+		      </configuration>
+		    </plugin>
 
 			<!--<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
